@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Virtual Scroll</title>
+	<style>
+		.virtual-scroller {
+			height: 100%;
+			width: 100%;
+			overflow: auto;
+		}
+		#body{
+			height: 400px;
+			width: 400px;
+			margin: 0 auto;
+		}
+		.element{
+			height: auto;
+			padding: 20px;
+		}
+		.element:nth-child(odd){
+			background-color: #F2F2F2;
+		}
+		.element:nth-child(even){
+			background-color: white;
+		}
+		.v-block{
+			min-height: 1px;
+			background-color: #fff; 
+			background-image:
+			linear-gradient(#eee .1em, transparent .1em);
+			background-size: 100% 1.2em;
+		}
+	</style>
+</head>
+<body>
+    <script type="text/ractive" id="vScroll">
+		<div class="virtual-scroller" id="{{id}}" on-touchmove="scroll">
+			{{#each blocks:i}}
+				{{#if renderedOnce[blocks[i]] || renderedOnce[blocks[i - 1]] || renderedOnce[blocks[i + 1]] }}
+					<div class="v-block" on-viewport="visible:{{blocks[i]}}" id="{{id}}-{{blocks[i]}}">
+						{{#each range(blocks[i], blockCount, list.length, reverse, visible):j}}
+							{{#if list[this]}}
+								{{>formatter list[this]}}
+							{{/if}}
+						{{/each}}
+					</div>
+				{{/if}}
+			{{/each}}
+		</div>
+	</script>
+	<script type="text/ractive" id="listItem">
+		<div class="element">{{.}}</div>
+	</script>
+	<div id="body"></div>
+	<script src="lib/ractive.js"></script>
+	<script src="lib/in-view.js"></script>
+	<script src="lib/main.js"></script>
+</body>
+</html>
