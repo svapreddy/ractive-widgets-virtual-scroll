@@ -1,0 +1,21 @@
+.virtual-scroller {
+	height: 100%;
+	width: 100%;
+	overflow: auto;
+}
+.v-block{
+	min-height: 1px;
+	background-color: #fff; 
+	background-image:
+	linear-gradient(#eee .1em, transparent .1em);
+	background-size: 100% 4em;
+}
+.vscroll-loader-bottom{
+	height: 1px;
+	background-color: #F2F2F2;
+}
+.vscroll-loader-top{
+	padding: 5px;
+	display: block;
+	text-align: center;
+}

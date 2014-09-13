@@ -1,0 +1,21 @@
+<script type="text/ractive" id="vScroll">
+	<div class="virtual-scroller" id="{{id}}" on-touchmove="scroll">
+		{{#if reverse}}
+			<span on-click="add:top" class="vscroll-loader-top">Previous</span>
+		{{/if}}
+		{{#each render:i}}
+			<div class="v-block" on-viewport="visible:{{this}}" id="{{id}}-{{this}}">
+				{{#if visible.indexOf(this) > -1}}
+					{{#each range(this, blockCount, list.length, reverse):j}}
+						{{#if list[this]}}
+							{{>formatter list[this]}}
+						{{/if}}
+					{{/each}}
+				{{/if}}
+			</div>
+		{{/each}}
+		{{#unless reverse}}
+			<div class="vscroll-loader-bottom" on-viewport="add:bottom"></div>
+		{{/unless}}
+	</div>
+</script>
