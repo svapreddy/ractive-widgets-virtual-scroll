@@ -1,3 +1,5 @@
+
+
 window.demoData = [
 	{
 		"_id": "5413116899de924819869abe",
@@ -18,6 +20,9 @@ window.demoData = [
 		"registered": "2014-03-17T18:46:53 -06:-30",
 		"latitude": -70.871714,
 		"longitude": 112.396222,
+		
+		
+		
 		"tags": [
       "ipsum",
       "deserunt",

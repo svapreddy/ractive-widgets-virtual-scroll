@@ -5,10 +5,7 @@
 }
 .v-block{
 	min-height: 1px;
-	background-color: #fff; 
-	background-image:
-	linear-gradient(#eee .1em, transparent .1em);
-	background-size: 100% 4em;
+	background-color: #fff;
 }
 .vscroll-loader-bottom{
 	height: 1px;

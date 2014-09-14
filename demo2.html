@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Virtual Scroll</title>
+    <link rel="stylesheet" type="text/css" href="demo/demo2.css">
+    <!-- Required for Virtual Scroll widget -->
+    <link rel="stylesheet" type="text/css" href="lib/ractive-widgets-vscroll.css">
+</head>
+	
+<body>
+	<!-- Below are Demo formatters, You can define own. -->
+	<script type="text/ractive" id="listItem">
+		<div class="element">{{{.}}}</div>
+	</script>
+	<script type="text/ractive" id="listItem2">
+		<div class="block-group element  {{isActive ? "" : "disabled"}}">
+		  	<div class="b3 block">
+				<input type="checkbox" checked={{isActive}} />
+			</div>
+			<div class="b2 block">
+				{{#if edit}}
+					<input value="{{name}}" />
+				{{/if}}
+				{{#if !edit}}
+					{{name}}
+				{{/if}}
+			</div>
+		  	<div class="b2 block">{{email}}</div>
+			<div class="b4 block {{ toNumber(balance) <= 2000 ? "red" : "green" }}">{{balance}}</div>
+			<div class="b2 block">{{phone}}</div>
+			<div class="b2 block">
+				<select disabled="{{isActive ? false : true}}">
+					{{#each friends}}
+						<option>{{.name}}</option>
+					{{/each}}
+				</select>
+			</div>
+			<div class="b6 block">{{gender.toUpperCase()}}</div>
+			<div class="b7 block">
+				<img src="demo-data/32x32.gif" />
+			</div>
+		</div>
+	</script>
+	<div id="grid"></div>
+	
+	<!-- Father of all below files ;) -->
+	<script src="lib/ractive.js"></script>
+	<!-- Viewport event for Ractive -->
+	<script src="lib/in-view.js"></script>
+	<!-- Test Data -->
+	<script src="demo-data/test.js"></script>
+	<!-- Virtual Scroll Widget -->
+	<script src="lib/ractive-widgets-vscroll.js"></script>
+	<!-- Demo code -->
+	<script src="demo/demo2.js"></script>
+</body>
+</html>
