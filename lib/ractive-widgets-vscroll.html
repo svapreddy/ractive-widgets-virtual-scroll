@@ -20,6 +20,23 @@
 	display: block;
 	text-align: center;
 }
+
+.moreIndicator {
+	background:url(
+		data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAO0lEQVQoU2NkIBIwEqmOAZfC/wwMcDkwmyKFyKbBXPYfm4k4FWK4B5sHQSYSrRBkAEgxCOAMLpgEQYUA7kUOCagdTc8AAAAASUVORK5CYII=
+	);
+
+	display: inline-block;
+	height: 10px;
+	width: 100%;
+}
+
+.moreIndicator > span {
+	display: block;
+	margin-top: 10px;
+	text-align: center;
+	background-color: white;
+}
 </style>
 <div class="virtual-scroller" id="{{id}}" on-touchmove="scroll">
 	{{#if reverse && blocks.length - render.length > 0}}
@@ -36,6 +53,9 @@
 		{{/if}}
 		</div>
 	{{/each}}
+	{{#unless hitBottom}}
+	<div class="moreIndicator"><span>more data available</span></div>
+	{{/unless}}
 	{{#unless reverse}}
 	<div class="vscroll-loader-bottom" on-viewport="@this.fire('add', event, 'bottom')"></div>
 	{{/unless}}
@@ -56,6 +76,7 @@ component.exports = {
 		this.set('render', []);
 		this.set('visible', []);
 		this.set('blocks', []);
+		this.set('hitBottom', false);
 
 		if(this.get('reverse')){
 			element.scrollTop = element.scrollHeight;
@@ -138,6 +159,10 @@ component.exports = {
 			}
 
 			this.set('blocks', arr.slice(0));
+
+			if(this.get('blocks').length <= 1) {
+				this.set('hitBottom', true);
+			}
 		});
 
 		this.on('visible', function on_visible(event) {
@@ -167,6 +192,10 @@ component.exports = {
 
 					if(this.get('visible').indexOf(idx * 1) == -1){
 						this.push('visible', idx * 1);
+
+						if(idx === this.get('blocks').slice(-1)[0]) {
+							this.set('hitBottom', true);
+						}
 					}
 
 					this.push('render', idx);
