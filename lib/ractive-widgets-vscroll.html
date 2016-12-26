@@ -1,26 +1,68 @@
-Ractive.components.vScroll = Ractive.extend({
-	template: '<div class="virtual-scroller" id="{{id}}" on-touchmove="scroll">'+
-		' {{#if reverse && blocks.length - render.length > 0}}'+
-		' <span on-click="@this.fire(\'add\', event, \'top\')" class="vscroll-loader-top">Previous</span>'+
-		' {{/if}}'+
-		' {{#each render:i}}'+
-		'   <div class="v-block" on-viewport="@this.fire(\'visible\', event)" id="{{id}}-{{this}}" data-vblock-index="{{i}}">'+
-		'   {{#if visible.indexOf(this) > -1}}'+
-		'     {{#each range(this, blockCount, list.length, reverse, blocks):j}}'+
-		'       {{#if list[this]}}'+
-		'         {{>formatter list[this]}}'+
-		'       {{/if}}'+
-		'     {{/each}}'+
-		'   {{/if}}'+
-		'   </div>'+
-		' {{/each}}'+
-		' {{#unless hitBottom}}'+
-		' <div class="moreIndicator"><span>more data available</span></div>'+
-		' {{/unless}}'+
-		' {{#unless reverse}}'+
-		' <div class="vscroll-loader-bottom" on-viewport="@this.fire(\'add\', event, \'bottom\')"></div>'+
-		' {{/unless}}'+
-		' </div>',
+<style>
+.virtual-scroller {
+	height: 100%;
+	width: 100%;
+	overflow: auto;
+}
+
+.v-block {
+	min-height: 1px;
+	background-color: #fff;
+}
+
+.vscroll-loader-bottom {
+	height: 1px;
+	background-color: #F2F2F2;
+}
+
+.vscroll-loader-top {
+	padding: 5px;
+	display: block;
+	text-align: center;
+}
+
+.moreIndicator {
+	background:url(
+		data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAO0lEQVQoU2NkIBIwEqmOAZfC/wwMcDkwmyKFyKbBXPYfm4k4FWK4B5sHQSYSrRBkAEgxCOAMLpgEQYUA7kUOCagdTc8AAAAASUVORK5CYII=
+	);
+
+	display: inline-block;
+	height: 10px;
+	width: 100%;
+}
+
+.moreIndicator > span {
+	display: block;
+	margin-top: 10px;
+	text-align: center;
+	background-color: white;
+}
+</style>
+<div class="virtual-scroller" id="{{id}}" on-touchmove="scroll">
+	{{#if reverse && blocks.length - render.length > 0}}
+	<span on-click="@this.fire('add', event, 'top')" class="vscroll-loader-top">Previous</span>
+	{{/if}}
+	{{#each render:i}}
+		<div class="v-block" on-viewport="@this.fire('visible', event)" id="{{id}}-{{this}}" data-vblock-index="{{i}}">
+		{{#if visible.indexOf(this) > -1}}
+			{{#each range(this, blockCount, list.length, reverse, blocks):j}}
+				{{#if list[this]}}
+					{{>formatter list[this]}}
+				{{/if}}
+			{{/each}}
+		{{/if}}
+		</div>
+	{{/each}}
+	{{#unless hitBottom}}
+	<div class="moreIndicator"><span>more data available</span></div>
+	{{/unless}}
+	{{#unless reverse}}
+	<div class="vscroll-loader-bottom" on-viewport="@this.fire('add', event, 'bottom')"></div>
+	{{/unless}}
+</div>
+<script>
+component.exports = {
+	isolated: true,
 	onrender: function onrender() {
 		var element = document.getElementById(this.get('id')), timer;
 		var ADD_TOP = "top";
@@ -90,6 +132,10 @@ Ractive.components.vScroll = Ractive.extend({
 		}, 10);
 
 		this.observe('list', function observe_list(){
+			if(this.get('list') === undefined) {
+				return;
+			}
+
 			var len = this.get('list').length,
 			    count = this.get('blockCount'),
 					rev = this.get('reverse');
@@ -114,7 +160,7 @@ Ractive.components.vScroll = Ractive.extend({
 
 			this.set('blocks', arr.slice(0));
 
-			if(this.get('blocks').length <= 1 ) {
+			if(this.get('blocks').length <= 1) {
 				this.set('hitBottom', true);
 			}
 		});
@@ -189,4 +235,5 @@ Ractive.components.vScroll = Ractive.extend({
 			return arr;
 		}
 	}
-});
+};
+</script>
